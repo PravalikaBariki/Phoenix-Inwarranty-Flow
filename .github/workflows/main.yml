@@ -30,14 +30,21 @@ jobs:
              newman run 'Inwarranty-flow-connection.postman_collection.json' \
              -e QA.postman_environment.json \
              -d testdata.csv \
-             -r cli,htmlextra
+             -r cli,htmlextra \
+             --reporter-htmlextra-export ./newman/index.html
      - name: Newman Report 
        if: always()
        uses: actions/upload-artifact@v7.0.0
        with:
          name: Newman Report
          path: newman/*.html
-
+     - name: Creating github page branch
+       if: always()
+       uses: peaceiris/actions-gh-pages@v4.0.0
+       with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}
+         publish_dir: newman/
+         
 
 
 
